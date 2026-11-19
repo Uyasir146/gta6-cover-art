@@ -3,20 +3,76 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
+<title>GTA Cover Art</title>
 <link rel="stylesheet" href="./style.css">
+<style>
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/Anton.ttf') format('truetype');
+}
+</style>
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
-  </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+<div class="drop-overlay" id="drop-overlay"><div class="drop-hint">Drop images here</div></div>
+<main class="app" id="app">
+  <header class="top-bar">
+    <h1>GTA Cover Art</h1>
+    <div class="size-row">
+      <label>Size <select id="size">
+        <option value="1920x1080">Landscape 1920x1080</option>
+        <option value="1080x1350">Portrait 1080x1350</option>
+        <option value="1080x1080">Square 1080x1080</option>
+      </select></label>
+    </div>
+  </header>
+  <div class="main-area">
+    <section class="controls-panel">
+      <div class="control-group">
+        <label for="title-input">Title</label>
+        <input id="title-input" type="text" maxlength="30" value="SUNSET HEIST" placeholder="COVER TITLE">
+      </div>
+      <div class="control-group">
+        <label for="subtitle">Subtitle</label>
+        <input id="subtitle" type="text" maxlength="50" value="Coming 2025" placeholder="Subtitle line">
+      </div>
+      <div class="control-group">
+        <label for="caption">Caption</label>
+        <input id="caption" type="text" maxlength="40" value="Sunset Heist" placeholder="Your caption">
+      </div>
+      <div class="control-group">
+        <label>Photos</label>
+        <div class="photo-tools">
+          <button id="add-photo" type="button">+ Add Photo</button>
+          <input id="photo-file" type="file" accept="image/*" multiple hidden>
+        </div>
+        <div id="photo-strip" class="photo-strip"></div>
+        <p class="hint">Click a thumbnail to assign it to the selected panel. Drop images here or on the canvas to add them.</p>
+      </div>
+      <div class="control-group" id="panel-controls">
+        <label id="panel-info">Click a panel to adjust</label>
+        <label>Zoom <input id="panel-zoom" type="range" min="0.5" max="2.5" step="0.01" value="1" disabled></label>
+        <label>Pan X <input id="panel-ox" type="range" min="0" max="1" step="0.01" value="0.5" disabled></label>
+        <label>Pan Y <input id="panel-oy" type="range" min="0" max="1" step="0.01" value="0.5" disabled></label>
+        <label>Tint <input id="panel-tint" type="range" min="0" max="1" step="0.01" value="0.5" disabled></label>
+      </div>
+      <div class="control-group">
+        <label for="grade">Color Grade</label>
+        <input id="grade" type="range" min="0" max="1" step="0.05" value="1">
+      </div>
+      <div class="control-group">
+        <label>Export</label>
+        <button id="export" type="button">Export Current Size</button>
+        <button id="export-1080x1080" type="button" class="secondary">Export 1080x1080</button>
+        <button id="export-1080x1350" type="button" class="secondary">Export 1080x1350</button>
+      </div>
+      <p id="status" role="status" class="status"></p>
+    </section>
+    <div class="canvas-wrap" id="canvas-wrap">
+      <canvas id="cover" width="1920" height="1080" aria-label="Cover art preview"></canvas>
+    </div>
+  </div>
 </main>
 <script type="module" src="./src/main.js"></script>
 </body>
